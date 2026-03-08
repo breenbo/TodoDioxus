@@ -5,4 +5,4 @@ mod add_todo;
 pub use add_todo::AddTodo;
 
 mod todo_card;
-pub use todo_card::CardContainer;
+pub use todo_card::{CardContainer, RemoveTodo};

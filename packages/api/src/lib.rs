@@ -71,3 +71,16 @@ pub async fn add_todo_to_db(content: String) -> Result<i64, ServerFnError> {
 
     Ok(res.last_insert_rowid())
 }
+
+#[delete("/api/todos/{uuid}")]
+pub async fn delete_todo_from_db(uuid: i64) -> Result<(), ServerFnError> {
+    let db = db_init::init_db().await;
+
+    sqlx::query("DELETE FROM todos WHERE id=$1")
+        .bind(uuid)
+        .execute(db)
+        .await
+        .map_err(|e| ServerFnError::new(e.to_string()))?;
+
+    Ok(())
+}
