@@ -9,16 +9,22 @@ static DB: OnceCell<Pool<Sqlite>> = OnceCell::const_new();
 // fn to connect to the db
 #[cfg(feature = "server")]
 async fn connect_db() -> Pool<Sqlite> {
-    let pool = sqlx::sqlite::SqlitePool::connect("sqlite://db.sqlite")
+    use sqlx::sqlite::SqliteConnectOptions;
+
+    let options = SqliteConnectOptions::new()
+        .filename("db.sqlite")
+        .create_if_missing(true);
+
+    let pool = sqlx::sqlite::SqlitePool::connect_with(options)
         .await
         .expect("Failed to connect to db");
 
     sqlx::query(
         "
-        CREATE TABLE IF NOT EXISTS users (
+        CREATE TABLE IF NOT EXISTS todos (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    content TEXT NOT NULL
-                    completed INTEGER
+                    content TEXT NOT NULL,
+                    completed INTEGER NOT NULL DEFAULT 0
                 )
     ",
     )

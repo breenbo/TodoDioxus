@@ -1,13 +1,19 @@
 use dioxus::prelude::*;
-use ui::Hero;
+
+use api::get_todo_list;
+use ui::{AddTodo, CenterContainer, DisplayTodos, Hero};
 
 #[component]
 pub fn Home() -> Element {
+    // get the todos here and make it reachable by childs
+    let todos = use_resource(|| async move { get_todo_list().await });
+    use_context_provider(|| todos);
+
     rsx! {
-        Hero {}
-        div {
-            class:"h-20 w-full bg-green-300",
-            "Component from the web package with tailwindcss"
+        CenterContainer {
+            Hero {},
+            AddTodo {},
+            DisplayTodos {}
         }
     }
 }

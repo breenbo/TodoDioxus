@@ -10,7 +10,7 @@ pub mod model;
 use model::TodoSql;
 
 /// Shared Todo type for client and server.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Todo {
     pub id: i64,
     pub content: String,
@@ -60,11 +60,11 @@ pub async fn get_todo(uuid: i64) -> Result<Todo, ServerFnError> {
 }
 
 #[post("/api/todos")]
-pub async fn add_todo(content: String, completed: bool) -> Result<i64, ServerFnError> {
+pub async fn add_todo_to_db(content: String) -> Result<i64, ServerFnError> {
     let db = db_init::init_db().await;
     let res = sqlx::query("INSERT INTO todos (content, completed) VALUES($1, $2)")
         .bind(&content)
-        .bind(completed)
+        .bind(false)
         .execute(db)
         .await
         .map_err(|e| ServerFnError::new(e.to_string()))?;

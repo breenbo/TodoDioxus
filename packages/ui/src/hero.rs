@@ -7,8 +7,8 @@ pub fn Hero() -> Element {
     rsx! {
         div {
             id: "hero",
-            class: "h-20 w-full bg-red-200",
-            "Component from Ui package"
+            class: "w-full py-8 text-3xl text-center font-bold",
+            "To Do's"
         }
     }
 }
