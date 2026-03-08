@@ -22,11 +22,16 @@ pub fn AddTodo() -> Element {
                 r#type: "text",
                 placeholder: "Add a new todo",
                 value: content(),
-                oninput: move |e| content.set(e.value())
+                oninput: move |e| content.set(e.value()),
+                onkeydown: move |e| async move {
+                    if e.key() == Key::Enter {
+                        add(()).await;
+                    }
+                }
             }
             button {
                 class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg",
-                onclick: add,
+                onclick: move |_| async move { add(()).await; },
                 "Add"
             }
         }
