@@ -46,7 +46,20 @@ Refer to `AGENTS.md` for comprehensive Dioxus 0.7 API reference. Critical points
 - Server functions: `#[post("/api/path")]` / `#[get("/api/path")]` returning `Result<T, ServerFnError>`
 - For fullstack hydration: use `use_server_future` instead of `use_resource`
 - Assets: `asset!("/assets/file.ext")` macro (paths relative to crate root)
-- Tailwind CSS: automatic via `asset!("/assets/tailwind.css")` containing `@import "tailwindcss";`
+- Tailwind CSS: see "Tailwind CSS Setup" section below
+
+## Tailwind CSS Setup
+
+Dioxus 0.7 automatically processes Tailwind CSS v4 at build time via `dx serve`. It requires two files per platform crate:
+
+1. **`packages/<platform>/tailwind.css`** — The Tailwind **input** file at the crate root. Contains `@import "tailwindcss"` and `@source` directives pointing to Rust source directories to scan for class names.
+2. **`packages/<platform>/assets/tailwind.css`** — An **empty** output placeholder. Referenced by `asset!("/assets/tailwind.css")` in code. Dioxus compiles Tailwind output into this file during build.
+
+The `@source` directives must point to all directories containing Tailwind class usage. In this workspace, each platform crate's input includes `@source "../ui/src"` to pick up classes from shared `ui` components, and `@source "./src"` for platform-specific views.
+
+**Why per-crate and not at the workspace root:** Dioxus looks for `tailwind.css` at the crate root of whichever package is being served, not the workspace root. Since `ui` is never served directly (always consumed through a platform crate), it does not need its own Tailwind files.
+
+**Important:** Do not put `@import "tailwindcss"` inside `assets/tailwind.css` — that file must stay empty. If it contains the raw import, Dioxus serves it as-is and the browser will 404 trying to fetch `tailwindcss` as a URL.
 
 ## Clippy Configuration
 

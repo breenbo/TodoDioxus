@@ -1,10 +1,13 @@
 use dioxus::prelude::*;
-use ui::{Echo, Hero};
+use ui::Hero;
 
 #[component]
 pub fn Home() -> Element {
     rsx! {
         Hero {}
-        Echo {}
+        div {
+            class:"h-20 w-full bg-green-300",
+            "Component from the web package with tailwindcss"
+        }
     }
 }
