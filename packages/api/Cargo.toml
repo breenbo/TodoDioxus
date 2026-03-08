@@ -5,13 +5,13 @@ edition = "2021"
 
 [dependencies]
 dioxus = { workspace = true, features = ["fullstack"] }
-tokio = { workspace = true, features = ["full"] }
+serde = { workspace = true, features = ["derive"] }
 sqlx = { workspace = true, features = [
   "sqlite",
   "runtime-tokio",
   "tls-native-tls",
-] }
-serde = { workspace = true }
+], optional = true }
+tokio = { workspace = true, features = ["full"], optional = true }
 
 [features]
-server = ["dioxus/server"]
+server = ["dioxus/server", "dep:sqlx", "dep:tokio"]
