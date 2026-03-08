@@ -1,0 +1,2 @@
+error /Users/admin/Documents/rust/dioxus/todo/packages/api/src/lib.rs:4:12 unresolved import `crate::model`
+error /Users/admin/Documents/rust/dioxus/todo/packages/api/src/lib.rs:9:9 unresolved import `crate::model`
