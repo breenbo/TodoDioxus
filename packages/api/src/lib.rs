@@ -72,6 +72,19 @@ pub async fn add_todo_to_db(content: String) -> Result<i64, ServerFnError> {
     Ok(res.last_insert_rowid())
 }
 
+#[post("/api/todos/toggle")]
+pub async fn toggle_todo(id: i64) -> Result<(), ServerFnError> {
+    let db = db_init::init_db().await;
+
+    let _ = sqlx::query("UPDATE todos SET completed = NOT completed WHERE id = $1")
+        .bind(id)
+        .execute(db)
+        .await
+        .map_err(|e| ServerFnError::new(e.to_string()))?;
+
+    Ok(())
+}
+
 #[delete("/api/todos/{uuid}")]
 pub async fn delete_todo_from_db(uuid: i64) -> Result<(), ServerFnError> {
     let db = db_init::init_db().await;
