@@ -24,8 +24,6 @@ fn main() {
 
 #[component]
 fn App() -> Element {
-    // Build cool things ✌️
-
     rsx! {
         // Global app resources
         document::Link { rel: "icon", href: FAVICON }

@@ -12,6 +12,7 @@ sqlx = { workspace = true, features = [
   "tls-native-tls",
 ], optional = true }
 tokio = { workspace = true, features = ["full"], optional = true }
+dotenvy = { workspace = true, optional = true }
 
 [features]
-server = ["dioxus/server", "dep:sqlx", "dep:tokio"]
+server = ["dioxus/server", "dep:sqlx", "dep:tokio", "dep:dotenvy"]
