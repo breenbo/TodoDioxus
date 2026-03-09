@@ -13,11 +13,11 @@ static DB: OnceCell<Pool<Sqlite>> = OnceCell::const_new();
 // fn to connect to the db
 #[cfg(feature = "server")]
 async fn connect_db() -> Pool<Sqlite> {
+    // NOTE: read env file and get the db url
     dotenvy::dotenv().ok();
     let db_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set in .env");
 
-    println!("[db] connecting to: {db_url}");
-
+    // NOTE: connect to the db with options
     let options = SqliteConnectOptions::from_str(&db_url)
         .expect("invalid DATABASE_URL")
         .create_if_missing(true);
